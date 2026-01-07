@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Airport extends Model
@@ -17,4 +18,9 @@ class Airport extends Model
         'city',
         'country',
     ];
+
+    public function segments(): HasMany
+    {
+        return $this->hasMany(FlightSegment::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
@@ -23,4 +24,19 @@ class Transaction extends Model
         'subtotal',
         'grandtotal',
     ];
+
+    public function flight(): BelongsTo
+    {
+        return $this->belongsTo(Flight::class);
+    }
+
+    public function class(): BelongsTo
+    {
+        return $this->belongsTo(FlightClass::class);
+    }
+
+    public function promo(): BelongsTo
+    {
+        return $this->belongsTo(PromoCode::class);
+    }
 }
