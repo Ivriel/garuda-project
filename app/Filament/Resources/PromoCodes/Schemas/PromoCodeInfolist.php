@@ -1,21 +1,25 @@
 <?php
 
-namespace App\Filament\Resources\Airlines\Schemas;
+namespace App\Filament\Resources\PromoCodes\Schemas;
 
-use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
-class AirlineInfolist
+class PromoCodeInfolist
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                ImageEntry::make('logo')
-                    ->disk('public'),
                 TextEntry::make('code'),
-                TextEntry::make('name'),
+                TextEntry::make('discount_type'),
+                TextEntry::make('discount')
+                    ->numeric(),
+                TextEntry::make('valid_until')
+                    ->dateTime(),
+                IconEntry::make('is_used')
+                    ->boolean(),
                 TextEntry::make('deleted_at')
                     ->dateTime(),
                 TextEntry::make('created_at')
