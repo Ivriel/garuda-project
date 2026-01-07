@@ -52,7 +52,12 @@ class FlightsTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()
+                    ->infolist([
+                        \App\Filament\Resources\Flights\Schemas\FlightInfolist::configure(new \Filament\Schemas\Schema)->getComponents(),
+                    ])
+                    ->modalHeading('View Flight')
+                    ->modalWidth('4xl'),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
