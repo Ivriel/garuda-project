@@ -22,7 +22,7 @@ class AirlineResource extends Resource
 {
     protected static ?string $model = Airline::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::PaperAirplane;
 
     protected static ?string $recordTitleAttribute = 'name';
 
