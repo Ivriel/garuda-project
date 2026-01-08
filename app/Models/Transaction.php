@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
@@ -38,5 +39,10 @@ class Transaction extends Model
     public function promo(): BelongsTo
     {
         return $this->belongsTo(PromoCode::class);
+    }
+
+    public function passengers(): HasMany
+    {
+        return $this->hasMany(TransactionPassenger::class);
     }
 }
