@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    font-family: "Poppins";
+    color: #10062B;
+    background-color: #F3F6FD;
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px; /* Adjust width as needed */
+    background: transparent; /* Hide scrollbar background */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust color and transparency */
+    border-radius: 50px; /* Rounded corners */
+}
+
+.custom-scrollbar::-webkit-scrollbar-button {
+    display: none; /* Hide up/down buttons */
+}
+
+/* For Firefox */
+.custom-scrollbar {
+    scrollbar-width: thin; /* Slim scrollbar */
+    scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* Thumb color and transparent background */
+}
