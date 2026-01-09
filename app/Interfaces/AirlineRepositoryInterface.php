@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface AirlineRepository
+interface AirlineRepositoryInterface
 {
     public function getAllAirlines();
 }
