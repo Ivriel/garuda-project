@@ -12,6 +12,8 @@
 </head>
 
 <body>
+    @yield('include')
+
     @include('includes.navbar')
 
     @yield('content')
