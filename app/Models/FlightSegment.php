@@ -18,6 +18,10 @@ class FlightSegment extends Model
         'time',
     ];
 
+    protected $casts = [ // buat formatting data di blade (konversi langsung dari model)
+        'time' => 'datetime'
+    ];
+
     public function flight(): BelongsTo
     {
         return $this->belongsTo(Flight::class);
