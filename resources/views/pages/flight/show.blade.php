@@ -94,7 +94,8 @@
                     </div>
                 </div>
             </div>
-            <div id="Tiers" class="grid grid-cols-2 gap-x-[30px]">
+            <form action="{{ route('booking', $flight->flight_number) }}" class="grid grid-cols-2 gap-x-[30px]">
+                <input type="hidden" name="flight_class_id" value="" id="flight_class_id">
                 @forelse($flight->classes as $class)
                     <div class="flex flex-col h-fit rounded-[20px] p-5 pb-[30px] gap-5 bg-white">
                         <div class="w-[260px] h-[180px] rounded-[30px] bg-[#D9D9D9] overflow-hidden">
@@ -123,14 +124,14 @@
                                 <p class="font-semibold">No Facilities</p>
                             </div>
                         @endforelse
-                        <a href="choose-seats-economy.html"
+                        <button onclick="document.getElementById('flight_class_id').value = {{ $class->id }}"
                             class="w-full rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
                             <span class="font-semibold text-white">Choose</span>
-                        </a>
+                            <button />
                     </div>
                 @empty
                 @endforelse
-            </div>
+            </form>
         </div>
     </main>
 @endsection
