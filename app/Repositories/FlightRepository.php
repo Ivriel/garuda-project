@@ -37,6 +37,6 @@ class FlightRepository implements FlightRepositoryInterface
 
     public function getFlightByFlightNumber($flightNumber)
     {
-        return Flight::where('flight_number', $flightNumber)->first();
+        return Flight::with(['segments.airport', 'airline', 'seats', 'classes'])->where('flight_number', $flightNumber)->first();
     }
 }

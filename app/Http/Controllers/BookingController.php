@@ -9,32 +9,41 @@ use Illuminate\Http\Request;
 class BookingController extends Controller
 {
     private FlightRepositoryInterface $flightRepository;
+
     private TransactionRepositoryInterface $transactionRepository;
 
     public function __construct(
         FlightRepositoryInterface $flightRepository,
         TransactionRepositoryInterface $transactionRepository
-    )
-    {
+    ) {
         $this->flightRepository = $flightRepository;
         $this->transactionRepository = $transactionRepository;
     }
-    public function booking(Request $request,$flightNumber)
+
+    public function booking(Request $request, $flightNumber)
     {
         $this->transactionRepository->saveTransactionDataToSession($request->all());
 
-        return redirect()->route('booking.chooseSeat',['flightNumber' => $flightNumber]);
+        return redirect()->route('booking.chooseSeat', ['flightNumber' => $flightNumber]);
     }
 
-    public function chooseSeat(Request $request,$flightNumber)
+    public function chooseSeat(Request $request, $flightNumber)
     {
         $transaction = $this->transactionRepository->getTransactionDataFromSession();
         $flight = $this->flightRepository->getFlightByFlightNumber($flightNumber);
         $tier = $flight->classes->find($transaction['flight_class_id']);
 
-        return view('pages.booking.choose-seat',compact('transaction','flight','tier'));
+        return view('pages.booking.choose-seat', compact('transaction', 'flight', 'tier'));
     }
-    public function checkBooking(){
+
+    public function confirmSeat(Request $request, $flightNumber)
+    {
+        dd($request->all());
+        $this->transactionRepository->saveTransactionDataToSession($request->all());
+    }
+
+    public function checkBooking()
+    {
         return view('pages.booking.check-booking');
     }
 }

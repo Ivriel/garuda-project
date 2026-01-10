@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalTaxElement = document.getElementById('totalTax');
     const grandTotalElement = document.getElementById('grandTotal');
 
-    const basePrice = 50000;
+
     const taxRate = 0.11;
 
     // Function to update the seat display information
