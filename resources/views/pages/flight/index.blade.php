@@ -172,7 +172,7 @@
                                 </div>
                                 <p class="min-w-[120px] font-semibold text-garuda-green text-center"> Rp
                                     {{ number_format($flight->classes->first()->price, 0, ',', '.') }}</p>
-                                <a href="choose-tiers.html"
+                                <a href="{{ route('flight.show', $flight->flight_number) }}"
                                     class="rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
                                     <span class="font-semibold text-white">Choose</span>
                                 </a>
@@ -273,7 +273,7 @@
                                 <p class="min-w-[120px] font-semibold text-garuda-green text-center">
                                     Rp {{ number_format($flight->classes->first()->price, 0, ',', '.') }}
                                 </p>
-                                <a href="choose-tiers.html"
+                                <a href="{{ route('flight.show', $flight->flight_number) }}"
                                     class="rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
                                     <span class="font-semibold text-white">Choose</span>
                                 </a>
