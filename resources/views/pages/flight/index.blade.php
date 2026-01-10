@@ -135,15 +135,21 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col gap-[2px] items-center justify-center">
-                                    <p class="text-sm text-garuda-grey">12 hours</p>
+                                    <p class="text-sm text-garuda-grey"> {{-- mencari perbedaan waktu jam nya --}}
+                                        {{ number_format($flight->segments->first()->time->diffInHours($flight->segments->last()->time), 0) }}
+                                        hours</p>
                                     <div class="flex items-center gap-[6px]">
-                                        <p class="font-semibold">CGK</p>
+                                        <p class="font-semibold">{{ $flight->segments->first()->airport->iata_code }}</p>
                                         <img src="assets/images/icons/transit-black.svg" alt="icon">
-                                        <p class="font-semibold">HND</p>
+                                        <p class="font-semibold">{{ $flight->segments->last()->airport->iata_code }}</p>
                                     </div>
-                                    <p class="text-sm text-garuda-grey">Transit 1x</p>
+                                    <p class="text-sm text-garuda-grey">
+                                        {{-- dikurangi 2 karena first dan last ga dihitung.cuma itung transit aja --}}
+                                        Transit {{ $flight->segments->count() - 2 }}x
+                                    </p>
                                 </div>
-                                <p class="min-w-[120px] font-semibold text-garuda-green text-center">Rp 4.560.341</p>
+                                <p class="min-w-[120px] font-semibold text-garuda-green text-center"> Rp
+                                    {{ number_format($flight->classes->first()->price, 0, ',', '.') }}</p>
                                 <a href="choose-tiers.html"
                                     class="rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
                                     <span class="font-semibold text-white">Choose</span>
@@ -152,109 +158,66 @@
                             <hr class="border-[#E8EFF7]">
                             <div class="accordion-content flex justify-between">
                                 <div class="left-content flex flex-col gap-[10px]">
-                                    <div class="departure flex items-center gap-5">
-                                        <div class="text-center w-[83px]">
-                                            <p class="font-semibold">08:30</p>
-                                            <p class="text-sm text-garuda-grey mt-[2px]">15 Sep 2024</p>
-                                        </div>
-                                        <div class="flex items-center gap-4">
-                                            <img src="assets/images/icons/departure.svg"
-                                                class="w-[50px] h-[50px] flex shrink-0" alt="icon">
-                                            <div>
-                                                <p class="text-sm text-garuda-grey mt-[2px]">Departure</p>
-                                                <p class="font-semibold">Jakarta (CGK)</p>
+                                    @forelse($flight->segments as $segment)
+                                        <div
+                                            class="{{ $loop->first ? 'departure' : ($loop->last ? 'arrival' : 'transit') }} flex items-center gap-5">
+                                            <div class="text-center w-[83px]">
+                                                <p class="font-semibold">{{ $segment->time->format('H:i') }}</p>
+                                                <p class="text-sm text-garuda-grey mt-[2px]">
+                                                    {{ $segment->time->format('d M Y') }}
+                                                </p>
+                                            </div>
+                                            <div class="flex items-center gap-4">
+                                                <img src="assets/images/icons/{{ $loop->first ? 'departure' : ($loop->last ? 'arrival' : 'transit-round-black') }}.svg"
+                                                    class="w-[50px] h-[50px] flex shrink-o" alt="icon">
+                                                <div>
+                                                    <p class="text-sm text-garuda-grey mt-[2px]">
+                                                        {{ $loop->first ? 'Departure' : ($loop->last ? 'Arrival' : 'Transit') }}
+                                                    </p>
+                                                    <p class="font-semibold">
+                                                        {{ $segment->airport->name }}
+                                                        ({{ $segment->airport->iata_code }})
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="time flex flex-col items-center w-[83px]">
-                                        <div class="h-8 border border-garuda-black border-dashed"></div>
-                                        <p class="text-xs leading-[18px] text-garuda-grey">3 hours</p>
-                                        <div class="h-8 border border-garuda-black border-dashed"></div>
-                                    </div>
-                                    <div class="transit flex items-center gap-5">
-                                        <div class="text-center w-[83px]">
-                                            <p class="font-semibold">12:00</p>
-                                            <p class="text-sm text-garuda-grey mt-[2px]">15 Sep 2024</p>
-                                        </div>
-                                        <div class="flex items-center gap-4">
-                                            <img src="assets/images/icons/transit-round-black.svg"
-                                                class="w-[50px] h-[50px] flex shrink-0" alt="icon">
-                                            <div>
-                                                <p class="text-sm text-garuda-grey mt-[2px]">Transit</p>
-                                                <p class="font-semibold">Bangkok (BKK)</p>
+                                        @if (!$loop->last)
+                                            <div class="time flex flex-col items-center w-[83px]">
+                                                <div class="h-8 border border-garuda-black border-dashed"></div>
+                                                <p class="text-xs leading-[18px] text-garuda-grey">
+                                                    {{ number_format($segment->time->diffInHours($flight->segments[$loop->index + 1]->time), 0) }}
+                                                    hours
+                                                </p>
+                                                <div class="h-8 border border-garuda-black border-dashed"></div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="time flex flex-col items-center w-[83px]">
-                                        <div class="h-8 border border-garuda-black border-dashed"></div>
-                                        <p class="text-xs leading-[18px] text-garuda-grey">3 hours</p>
-                                        <div class="h-8 border border-garuda-black border-dashed"></div>
-                                    </div>
-                                    <div class="arrival flex items-center gap-5">
-                                        <div class="text-center w-[83px]">
-                                            <p class="font-semibold">12:00</p>
-                                            <p class="text-sm text-garuda-grey mt-[2px]">15 Sep 2024</p>
-                                        </div>
-                                        <div class="flex items-center gap-4">
-                                            <img src="assets/images/icons/arrival.svg"
-                                                class="w-[50px] h-[50px] flex shrink-0" alt="icon">
-                                            <div>
-                                                <p class="text-sm text-garuda-grey mt-[2px]">Arrival</p>
-                                                <p class="font-semibold">Tokyo (HND)</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        @endif
+                                    @empty
+                                    @endforelse
                                 </div>
                                 <div
                                     class="grid grid-cols-2 w-[320px] shrink-0 h-fit p-5 gap-y-6 justify-between rounded-[30px] bg-garuda-bg-grey">
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/box-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Baggages</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/video-play-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Entertainment</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/electricity-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">USB C Port</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/coffee-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Heavy Meals</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/security-user-black.svg"
-                                            class="w-6 h-6 flex shrink-0" alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Lifeguard</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/wifi-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Wi-fi Onboard</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
+                                    @forelse($flight->classes as $class)
+                                        @forelse ($class->facilities as $facility)
+                                            <div class="flex items-center gap-3 even:w-[139px] shrink-0">
+                                                <img src="{{ asset('storage/' . $facility->image) }}"
+                                                    class="w-6 h-6 flex shrink-0" alt="icon">
+                                                <div>
+                                                    <p class="font-semibold text-sm">{{ $facility->name }}</p>
+                                                    <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="flex items-center gap-3 even:w-[139px] shrink-0">
+                                                <img class="w-6 h-6 flex shrink-0" alt="icon">
+                                                <div>
+                                                    <p class="font-semibold text-sm">Tidak ada fasilitas</p>
+                                                    <p class="text-xs leading-[18px] text-garuda-grey">Penerbangan ini
+                                                        tidak memiliki fasilitas</p>
+                                                </div>
+                                            </div>
+                                        @endforelse
+                                    @empty
+                                    @endforelse
                                 </div>
                             </div>
                         </div>
@@ -274,15 +237,20 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col gap-[2px] items-center justify-center">
-                                    <p class="text-sm text-garuda-grey">3 hours</p>
+                                    <p class="text-sm text-garuda-grey">
+                                        {{ number_format($flight->segments->first()->time->diffInHours($flight->segments->last()->time), 0) }}
+                                        hours
+                                    </p>
                                     <div class="flex items-center gap-[6px]">
-                                        <p class="font-semibold">CGK</p>
-                                        <img src="assets/images/icons/direct-black.svg" alt="icon">
-                                        <p class="font-semibold">HND</p>
+                                        <p class="font-semibold">{{ $flight->segments->first()->airport->iata_code }}</p>
+                                        <img src="assets/images/icons/transit-black.svg" alt="icon">
+                                        <p class="font-semibold">{{ $flight->segments->last()->airport->iata_code }}</p>
                                     </div>
                                     <p class="text-sm text-garuda-grey">Direct</p>
                                 </div>
-                                <p class="min-w-[120px] font-semibold text-garuda-green text-center">Rp 24.560.341</p>
+                                <p class="min-w-[120px] font-semibold text-garuda-green text-center">
+                                    Rp {{ number_format($flight->classes->first()->price, 0, ',', '.') }}
+                                </p>
                                 <a href="choose-tiers.html"
                                     class="rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
                                     <span class="font-semibold text-white">Choose</span>
@@ -293,8 +261,12 @@
                                 <div class="left-content flex flex-col gap-[10px]">
                                     <div class="departure flex items-center gap-5">
                                         <div class="text-center w-[83px]">
-                                            <p class="font-semibold">08:30</p>
-                                            <p class="text-sm text-garuda-grey mt-[2px]">15 Sep 2024</p>
+                                            <p class="font-semibold">
+                                                {{ $flight->segments->first()->time->format('H:i') }}
+                                            </p>
+                                            <p class="text-sm text-garuda-grey mt-[2px]">
+                                                {{ $flight->segments->first()->time->format('d F y') }}
+                                            </p>
                                         </div>
                                         <div class="flex items-center gap-4">
                                             <img src="assets/images/icons/departure.svg"
@@ -307,74 +279,59 @@
                                     </div>
                                     <div class="time flex flex-col items-center w-[83px]">
                                         <div class="h-8 border border-garuda-black border-dashed"></div>
-                                        <p class="text-xs leading-[18px] text-garuda-grey">3 hours</p>
+                                        <p class="text-xs leading-[18px] text-garuda-grey">
+                                            {{-- mencari perbedaan waktu jam nya --}}
+                                            {{ number_format($flight->segments->first()->time->diffInHours($flight->segments->last()->time), 0) }}
+                                            hours
+                                        </p>
                                         <div class="h-8 border border-garuda-black border-dashed"></div>
                                     </div>
                                     <div class="arrival flex items-center gap-5">
                                         <div class="text-center w-[83px]">
-                                            <p class="font-semibold">12:00</p>
-                                            <p class="text-sm text-garuda-grey mt-[2px]">15 Sep 2024</p>
+                                            <p class="font-semibold">
+                                                {{ $flight->segments->last()->time->format('H:i') }}
+                                            </p>
+                                            <p class="text-sm text-garuda-grey mt-[2px]">
+                                                {{ $flight->segments->last()->time->format('d F y') }}
+                                            </p>
                                         </div>
                                         <div class="flex items-center gap-4">
                                             <img src="assets/images/icons/arrival.svg"
                                                 class="w-[50px] h-[50px] flex shrink-0" alt="icon">
                                             <div>
                                                 <p class="text-sm text-garuda-grey mt-[2px]">Arrival</p>
-                                                <p class="font-semibold">Tokyo (HND)</p>
+                                                <p class="font-semibold">
+                                                    {{ $flight->segments->first()->airport->name }}
+                                                    ({{ $flight->segments->first()->airport->iata_code }})
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div
                                     class="grid grid-cols-2 w-[320px] shrink-0 h-fit p-5 gap-y-6 justify-between rounded-[30px] bg-garuda-bg-grey">
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/box-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Baggages</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/video-play-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Entertainment</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/electricity-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">USB C Port</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/coffee-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Heavy Meals</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/security-user-black.svg"
-                                            class="w-6 h-6 flex shrink-0" alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Lifeguard</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3 even:w-[139px] shrink-0">
-                                        <img src="assets/images/icons/wifi-black.svg" class="w-6 h-6 flex shrink-0"
-                                            alt="icon">
-                                        <div>
-                                            <p class="font-semibold text-sm">Wi-fi Onboard</p>
-                                            <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
-                                        </div>
-                                    </div>
+                                    @forelse($flight->classes as $class)
+                                        @forelse ($class->facilities as $facility)
+                                            <div class="flex items-center gap-3 even:w-[139px] shrink-0">
+                                                <img src="{{ asset('storage/' . $facility->image) }}"
+                                                    class="w-6 h-6 flex shrink-0" alt="icon">
+                                                <div>
+                                                    <p class="font-semibold text-sm">{{ $facility->name }}</p>
+                                                    <p class="text-xs leading-[18px] text-garuda-grey">Included</p>
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="flex items-center gap-3 even:w-[139px] shrink-0">
+                                                <img class="w-6 h-6 flex shrink-0" alt="icon">
+                                                <div>
+                                                    <p class="font-semibold text-sm">Tidak ada fasilitas</p>
+                                                    <p class="text-xs leading-[18px] text-garuda-grey">Penerbangan ini
+                                                        tidak memiliki fasilitas</p>
+                                                </div>
+                                            </div>
+                                        @endforelse
+                                    @empty
+                                    @endforelse
                                 </div>
                             </div>
                         </div>
