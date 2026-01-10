@@ -1,24 +1,34 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Function to handle selecting a dropdown option
-    function handleSelection(dropdownId, labelId) {
+    function handleSelection(dropdownId, labelId, inputId) {
         const selectedOption = document.querySelector(`#${dropdownId} input:checked`);
         if (selectedOption) {
-            const labelText = selectedOption.id;
-            document.getElementById(labelId).textContent = labelText;
+            const airportValue = selectedOption.value;
+
+            // Update label with IATA code only
+            if (airportValue) {
+                document.getElementById(labelId).textContent = airportValue;
+            }
+
+            // Update hidden input with airport IATA code
+            if (inputId && airportValue) {
+                document.getElementById(inputId).value = airportValue;
+            }
         }
     }
 
-    // Add event listeners to each radio input inside the dropdowns
-    document.querySelectorAll('#Departure-Dropdown input').forEach(input => {
+    // Add event listeners to each radio input inside the departure dropdown
+    document.querySelectorAll('#Departure-Dropdown input[type="radio"]').forEach(input => {
         input.addEventListener('change', function () {
-            handleSelection('Departure-Dropdown', 'Departure-Label');
+            handleSelection('Departure-Dropdown', 'Departure-Label', 'departure-input');
             document.getElementById('Departure-Dropdown').classList.add('hidden');
         });
     });
 
-    document.querySelectorAll('#Arrival-Dropdown input').forEach(input => {
+    // Add event listeners to each radio input inside the arrival dropdown
+    document.querySelectorAll('#Arrival-Dropdown input[type="radio"]').forEach(input => {
         input.addEventListener('change', function () {
-            handleSelection('Arrival-Dropdown', 'Arrival-Label');
+            handleSelection('Arrival-Dropdown', 'Arrival-Label', 'arrival-input');
             document.getElementById('Arrival-Dropdown').classList.add('hidden');
         });
     });

@@ -20,13 +20,15 @@
         <p class="text-lg leading-8">Your truly great experience starts here with us <br>that lorem dolor amet si package
             exclusively matter.</p>
     </div>
-    <form action="available-flights.html" class="relative flex flex-col w-full max-w-[1280px] px-[75px] mx-auto mt-[86px]">
+    <form action="{{ route('flight.index') }}" method="GET"
+        class="relative flex flex-col w-full max-w-[1280px] px-[75px] mx-auto mt-[86px]">
         <div class="flex flex-col rounded-[30px] p-[30px] gap-4 bg-white">
             <h2 class="font-bold text-xl leading-[30px]">Book Your Next Flight</h2>
             <div class="flex items-center gap-5">
                 <div class="grid grid-cols-4 items-center rounded-[20px] border border-[#E8EFF7]">
                     <div id="Departure"
                         class="dropdown-container relative flex items-center h-full border-r border-[#E8EFF7] last:border-r-0">
+                        <input type="hidden" name="departure" id="departure-input" value="">
                         <button type="button"
                             class="dropdown flex items-center gap-4 p-5 first:pl-6 first:border-l-0 last:pr-6 last:border-r-0"
                             data-dropdown-target="#Departure-Dropdown">
@@ -42,13 +44,15 @@
                             <div class="flex flex-col justify-center w-[483px] p-5 gap-4 shrink-0">
                                 @forelse ($airports as $airport)
                                     <label
-                                        class="relative flex items-center rounded-[10px] gap-[10px] p-0 has-[:checked]:p-[10px] has-[:checked]:bg-garuda-bg-grey transition-all duration-300">
-                                        <input type="radio" name="departure-radio" id=""
+                                        class="relative flex items-center rounded-[10px] gap-[10px] p-0 has-[:checked]:p-[10px] has-[:checked]:bg-garuda-bg-grey transition-all duration-300 cursor-pointer">
+                                        <input type="radio" name="departure-radio" value="{{ $airport->iata_code }}"
+                                            data-airport-name="{{ $airport->name }} {{ $airport->iata_code }}"
+                                            data-airport-city="{{ $airport->city }}"
                                             class="absolute top-1/2 left-1/2 opacity-0">
                                         <img src="assets/images/icons/airplane-black.svg" class="flex shrink-0 w-[34px]"
                                             alt="icon">
                                         <div class="flex flex-col gap-[2px]">
-                                            <p class="font-semibold">{{ $airport->name }} {{ $airport->iata_code }}</p>
+                                            <p class="font-semibold">{{ $airport->name }} ({{ $airport->iata_code }})</p>
                                             <p class="text-sm text-garuda-grey">{{ $airport->city }}</p>
                                         </div>
                                     </label>
@@ -56,7 +60,7 @@
                                 @empty
                                     <label
                                         class="relative flex items-center rounded-[10px] gap-[10px] p-0 has-[:checked]:p-[10px] has-[:checked]:bg-garuda-bg-grey transition-all duration-300">
-                                        <input type="radio" name="departure-radio" id=""
+                                        <input type="radio" name="departure-radio" value=""
                                             class="absolute top-1/2 left-1/2 opacity-0">
                                         <img src="assets/images/icons/airplane-black.svg" class="flex shrink-0 w-[34px]"
                                             alt="icon">
@@ -71,6 +75,7 @@
                     </div>
                     <div id="Arrival"
                         class="dropdown-container relative flex items-center h-full border-r border-[#E8EFF7] last:border-r-0">
+                        <input type="hidden" name="arrival" id="arrival-input" value="">
                         <button type="button" class="dropdown flex items-center gap-4 p-5 first:pl-6 last:pr-6"
                             data-dropdown-target="#Arrival-Dropdown">
                             <img src="assets/images/icons/departure.svg" class="w-[50px] flex shrink-0" alt="icon">
@@ -84,13 +89,15 @@
                             <div class="flex flex-col justify-center w-[483px] p-5 gap-4 shrink-0">
                                 @forelse ($airports as $airport)
                                     <label
-                                        class="relative flex items-center rounded-[10px] gap-[10px] p-0 has-[:checked]:p-[10px] has-[:checked]:bg-garuda-bg-grey transition-all duration-300">
-                                        <input type="radio" name="departure-radio" id=""
+                                        class="relative flex items-center rounded-[10px] gap-[10px] p-0 has-[:checked]:p-[10px] has-[:checked]:bg-garuda-bg-grey transition-all duration-300 cursor-pointer">
+                                        <input type="radio" name="arrival-radio" value="{{ $airport->iata_code }}"
+                                            data-airport-name="{{ $airport->name }} {{ $airport->iata_code }}"
+                                            data-airport-city="{{ $airport->city }}"
                                             class="absolute top-1/2 left-1/2 opacity-0">
                                         <img src="assets/images/icons/airplane-black.svg" class="flex shrink-0 w-[34px]"
                                             alt="icon">
                                         <div class="flex flex-col gap-[2px]">
-                                            <p class="font-semibold">{{ $airport->name }} {{ $airport->iata_code }}</p>
+                                            <p class="font-semibold">{{ $airport->name }} ({{ $airport->iata_code }})</p>
                                             <p class="text-sm text-garuda-grey">{{ $airport->city }}</p>
                                         </div>
                                     </label>
@@ -98,7 +105,7 @@
                                 @empty
                                     <label
                                         class="relative flex items-center rounded-[10px] gap-[10px] p-0 has-[:checked]:p-[10px] has-[:checked]:bg-garuda-bg-grey transition-all duration-300">
-                                        <input type="radio" name="departure-radio" id=""
+                                        <input type="radio" name="arrival-radio" value=""
                                             class="absolute top-1/2 left-1/2 opacity-0">
                                         <img src="assets/images/icons/airplane-black.svg" class="flex shrink-0 w-[34px]"
                                             alt="icon">

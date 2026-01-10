@@ -3,35 +3,57 @@
 @section('content')
     <main class="relative flex flex-col w-full max-w-[1280px] px-[75px] mx-auto mt-[50px] mb-[62px]">
         <h1 class="font-extrabold text-[50px] leading-[75px]">Flight Search</h1>
-        <div class="flex w-fit rounded-[20px] p-5 gap-[30px] bg-white mt-5">
-            @if (request()->departure)
-                <div class="flex flex-col gap-[2px]">
-                    <p class="text-sm text-garuda-grey">Departure</p>
-                    <p class="font-semibold text-lg">{{ request()->departure }}</p>
-                </div>
-            @endif
+        @if (request()->departure || request()->arrival || request()->date || request()->quantity)
+            <div class="flex w-fit rounded-[20px] p-5 gap-[30px] bg-white mt-5">
+                @if (request()->departure)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Departure</p>
+                        <p class="font-semibold text-lg">{{ request()->departure }}</p>
+                    </div>
+                @else
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Departure</p>
+                        <p class="font-semibold text-lg">-</p>
+                    </div>
+                @endif
 
-            @if (request()->arrival)
-                <div class="flex flex-col gap-[2px]">
-                    <p class="text-sm text-garuda-grey">Arrival</p>
-                    <p class="font-semibold text-lg">{{ request()->arrival }}</p>
-                </div>
-            @endif
+                @if (request()->arrival)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Arrival</p>
+                        <p class="font-semibold text-lg">{{ request()->arrival }}</p>
+                    </div>
+                @else
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Arrival</p>
+                        <p class="font-semibold text-lg">-</p>
+                    </div>
+                @endif
 
-            @if (request()->date)
-                <div class="flex flex-col gap-[2px]">
-                    <p class="text-sm text-garuda-grey">Date</p>
-                    <p class="font-semibold text-lg">{{ request()->date }}</p>
-                </div>
-            @endif
+                @if (request()->date)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Date</p>
+                        <p class="font-semibold text-lg">{{ request()->date }}</p>
+                    </div>
+                @else
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Date</p>
+                        <p class="font-semibold text-lg">-</p>
+                    </div>
+                @endif
 
-            @if (request()->quantity)
-                <div class="flex flex-col gap-[2px]">
-                    <p class="text-sm text-garuda-grey">Quantity</p>
-                    <p class="font-semibold text-lg">{{ request()->quantity }}</p>
-                </div>
-            @endif
-        </div>
+                @if (request()->quantity)
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Quantity</p>
+                        <p class="font-semibold text-lg">{{ request()->quantity }} People</p>
+                    </div>
+                @else
+                    <div class="flex flex-col gap-[2px]">
+                        <p class="text-sm text-garuda-grey">Quantity</p>
+                        <p class="font-semibold text-lg">-</p>
+                    </div>
+                @endif
+            </div>
+        @endif
         <div class="flex gap-[26px] mt-[30px]">
             <form id="Filter" action="#"
                 class="flex flex-col w-[320px] shrink-0 h-fit rounded-3xl border border-[#E8EFF7] p-5 gap-5 bg-white">
@@ -337,6 +359,7 @@
                         </div>
                     @endif
                 @empty
+                    No flights matched your search
                 @endforelse
             </div>
         </div>

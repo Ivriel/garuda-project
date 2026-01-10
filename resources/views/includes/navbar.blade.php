@@ -1,11 +1,12 @@
 <nav class="relative flex justify-center px-[75px] mt-[30px]">
     <div class="flex items-center w-full max-w-[1130px] rounded-[20px] justify-between py-4 px-5 bg-white">
-        <a href="index.html">
+        <a href="{{ route('home') }}">
             <img src="assets/images/logos/logo.svg" class="flex shrink-0 h-10" alt="logo">
         </a>
         <ul class="flex items-center gap-[30px] flex-wrap">
             <li>
-                <a href="index.html" class="hover:font-bold transition-all duration-300 font-bold">Flights</a>
+                <a href="{{ route('flight.index') }}"
+                    class="hover:font-bold transition-all duration-300 font-bold">Flights</a>
             </li>
             <li>
                 <a href="#" class="hover:font-bold transition-all duration-300 ">Hotels</a>
