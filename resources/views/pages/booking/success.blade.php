@@ -139,9 +139,14 @@
                         class="w-full rounded-full py-3 px-5 text-center bg-garuda-blue hover:shadow-[0px_14px_30px_0px_#0068FF66] transition-all duration-300">
                         <span class="font-semibold text-white">Book More Tickets</span>
                     </a>
-                    <a href="booking-details.html" class="w-full rounded-full py-3 px-5 text-center bg-garuda-black ">
+                  <form action="{{ route('booking.show') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="code" value="{{ $transaction->code }}">
+                    <input type="hidden" name="phone" value="{{ $transaction->phone }}">
+                      <button type="submit" class="w-full rounded-full py-3 px-5 text-center bg-garuda-black ">
                         <span class="font-semibold text-white">View My Booking Details</span>
-                    </a>
+                    </button>
+                  </form>
                 </div>
             </div>
         </div>

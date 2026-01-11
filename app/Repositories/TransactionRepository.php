@@ -33,9 +33,9 @@ class TransactionRepository implements TransactionRepositoryInterface
 
         $data['subtotal'] = $this->calculateSubtotal($data['flight_class_id'], $data['number_of_passengers']);
         $data['grandtotal'] = $data['subtotal'];
-        //hitung subtotal dan grandtotal awal
+        // hitung subtotal dan grandtotal awal
 
-        if (!empty($data['promo_code'])) {
+        if (! empty($data['promo_code'])) {
             $data = $this->applyPromoCode($data);
         }
 
@@ -46,32 +46,37 @@ class TransactionRepository implements TransactionRepositoryInterface
         $this->savePassengers($data['passengers'], $transaction->id);
 
         session()->forget('transaction');
+
         return $transaction;
     }
 
-    public function generateTransactionCode() {
-        return "BWAGARUDA" . rand(1000,9999);
+    public function generateTransactionCode()
+    {
+        return 'BWAGARUDA'.rand(1000, 9999);
     }
 
-    public function countPassengers($passengers) {
+    public function countPassengers($passengers)
+    {
         return count($passengers);
     }
 
-    public function calculateSubtotal($fligtClassId,$numberOfPassengers) {
+    public function calculateSubtotal($fligtClassId, $numberOfPassengers)
+    {
         $price = FlightClass::findOrFail($fligtClassId)->price;
+
         return $price * $numberOfPassengers;
     }
 
     private function applyPromoCode($data)
     {
-        $promo = PromoCode::where('code',$data['promo_code'])
-        ->where('valid_until','>=',now())
-        ->where('is_used',false)
-        ->first();
+        $promo = PromoCode::where('code', $data['promo_code'])
+            ->where('valid_until', '>=', now())
+            ->where('is_used', false)
+            ->first();
 
-        if($promo) {
-            if($promo->discount_type === 'percentage') {
-                $data['discount'] = $data['grandtotal'] * ($promo->discount /100);
+        if ($promo) {
+            if ($promo->discount_type === 'percentage') {
+                $data['discount'] = $data['grandtotal'] * ($promo->discount / 100);
             } else {
                 $data['discount'] = $promo->discount;
             }
@@ -89,7 +94,8 @@ class TransactionRepository implements TransactionRepositoryInterface
     private function addPPN($grandTotal)
     {
         $ppn = $grandTotal * 0.11;
-        return $grandTotal+ $ppn;
+
+        return $grandTotal + $ppn;
     }
 
     private function createTransaction($data)
@@ -97,20 +103,21 @@ class TransactionRepository implements TransactionRepositoryInterface
         return Transaction::create($data);
     }
 
-    public function savePassengers($passengers,$transactionId)
+    public function savePassengers($passengers, $transactionId)
     {
-        foreach($passengers as $passenger)
-        {
+        foreach ($passengers as $passenger) {
             $passenger['transaction_id'] = $transactionId;
             TransactionPassenger::create($passenger);
         }
     }
 
-    public function getTransactionByCode($code) {
-        return Transaction::where('code',$code)->first();
+    public function getTransactionByCode($code)
+    {
+        return Transaction::where('code', $code)->first();
     }
 
-    public function getTransactionByCodeEmailPhone($code, $email, $phone) {
-        return Transaction::where('code',$code)->where('email',$email)->where('phone_number',$phone)->first();
+    public function getTransactionByCodePhone($code, $phone)
+    {
+        return Transaction::where('code', $code)->where('phone', $phone)->first();
     }
 }
