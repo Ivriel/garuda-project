@@ -9,7 +9,8 @@
         "filament/filament": "4.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
-        "livewire/livewire": "^3.7"
+        "livewire/livewire": "^3.7",
+        "midtrans/midtrans-php": "^2.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",

@@ -63,6 +63,12 @@ class TransactionResource extends Resource
         return parent::getRecordRouteBindingEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
+            ])
+            ->with([
+                'flight',
+                'class',
+                'promo',
+                'passengers.seat'
             ]);
     }
 }

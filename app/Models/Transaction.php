@@ -33,12 +33,12 @@ class Transaction extends Model
 
     public function class(): BelongsTo
     {
-        return $this->belongsTo(FlightClass::class);
+        return $this->belongsTo(FlightClass::class, 'flight_class_id');
     }
 
     public function promo(): BelongsTo
     {
-        return $this->belongsTo(PromoCode::class);
+        return $this->belongsTo(PromoCode::class, 'promo_code_id');
     }
 
     public function passengers(): HasMany
