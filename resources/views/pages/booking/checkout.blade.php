@@ -301,12 +301,13 @@
                                 <input type="radio" name="payment-method" class="absolute opacity-0 left-1/2" required>
                             </label>
                             <label
-                                class="group relative flex items-center w-full rounded-full py-3 px-5 bg-garuda-bg-dark-grey gap-[10px] has-[:checked]:bg-garuda-orange transition-all duration-300">
+                                title="Cannot choose this shit"
+                                class="cursor-not-allowed group relative flex items-center w-full rounded-full py-3 px-5 bg-garuda-bg-dark-grey gap-[10px] has-[:checked]:bg-garuda-orange transition-all duration-300">
                                 <img src="{{ asset('assets/images/icons/note-add-black.svg') }}"
                                     class="w-5 flex shrink-0 group-has-[:checked]:invert transition-all duration-300"
                                     alt="icon">
-                                <span class="font-semibold group-has-[:checked]:text-white">Transfer to Bank</span>
-                                <input type="radio" name="payment-method" class="absolute opacity-0 left-1/2" required>
+                                <span class="font-semibold group-has-[:checked]:text-white">Transfer to Bank (Coming Soon   )</span>
+                                <input type="radio" name="payment-method" class="absolute opacity-0 left-1/2" disabled>
                             </label>
                         </div>
                     </div>
